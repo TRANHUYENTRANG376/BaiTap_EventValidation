@@ -37,12 +37,15 @@ class MainActivity : AppCompatActivity() {
         binding.edtMSV.error = null
         binding.edtLop.error = null
 
-        if (hoTen.length < 2 ||
-            hoTen.any { it.isDigit() } ||
-            hoTen.none { it.isLetter() }
+        val regexHoTen = Regex(
+            "^[\\p{L}]+(?:\\s+[\\p{L}]+)+$"
+        )
+
+        if (!hoTen.matches(regexHoTen) ||
+            hoTen.length !in 5..50
         ) {
             binding.edtHoTen.error =
-                "Họ tên phải có ít nhất 2 ký tự và không chứa số"
+                "Họ tên phải từ 5-50 ký tự"
             hopLe = false
         }
 
@@ -57,9 +60,9 @@ class MainActivity : AppCompatActivity() {
             hopLe = false
         }
 
-        if (!msv.matches(Regex("^[A-Za-z0-9]{12,15}$"))) {
+        if (!msv.matches(Regex("^\\d{13,15}$"))) {
             binding.edtMSV.error =
-                "MSV phải gồm 12-15 chữ cái hoặc chữ số"
+                "Mã sinh viên phải phải từ 13-15 chữ số"
             hopLe = false
         }
 
